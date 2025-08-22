@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SVG Drawing Tool</title>
+  <style>
+    body { font-family: Arial; }
+    #canvas {
+      border: 2px solid black;
+      background: #f8f8f8;
+    }
+  </style>
+</head>
+<body>
+  <h3>SVG Drawing Tool</h3>
+
+  <!-- SVG area for drawing -->
+  <svg id="canvas" width="500" height="300"></svg>
+
+  <script>
+    let svg = document.getElementById("canvas");
+    let drawing = false;
+    let currentPath = null;
+
+    // Start drawing when mouse is pressed
+    svg.addEventListener("mousedown", function(event) {
+      drawing = true;
+      currentPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      currentPath.setAttribute("stroke", "blue");
+      currentPath.setAttribute("fill", "none");
+      currentPath.setAttribute("d", `M ${event.offsetX} ${event.offsetY}`);
+      svg.appendChild(currentPath);
+    });
+
+    // Draw while moving the mouse
+    svg.addEventListener("mousemove", function(event) {
+      if (!drawing) return;
+      let d = currentPath.getAttribute("d");
+      currentPath.setAttribute("d", d + ` L ${event.offsetX} ${event.offsetY}`);
+    });
+
+    // Stop drawing when mouse is released
+    svg.addEventListener("mouseup", function() {
+      drawing = false;
+    });
+  </script>
+</body>
+</html>
